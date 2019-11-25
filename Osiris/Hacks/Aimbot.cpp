@@ -113,7 +113,7 @@ void Aimbot::run(UserCmd* cmd) noexcept
     if (!config.aimbot[weaponIndex].enabled)
         weaponIndex = 0;
 
-	if (config.aimbot[weaponIndex].enabled && config.aimbot[weaponIndex].standaloneRCS) {
+	if (config.aimbot[weaponIndex].enabled && config.aimbot[weaponIndex].standaloneRCS && localPlayer->isAlive()) {
 
 		static Vector StaticAimPunchAngle;
 
