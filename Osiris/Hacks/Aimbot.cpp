@@ -123,8 +123,20 @@ void Aimbot::run(UserCmd* cmd) noexcept
 			auto CurrentAimPunchAngle = localPlayer->aimPunchAngle() * SRCSweaponRecoilScale->getFloat();
 			CurrentAimPunchAngle.x *= config.aimbot[weaponIndex].recoilControlY;
 			CurrentAimPunchAngle.y *= config.aimbot[weaponIndex].recoilControlX;
+
+			if (fabs(CurrentAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(CurrentAimPunchAngle.y) > config.misc.maxAngleDelta) {
+				CurrentAimPunchAngle.x = std::clamp(CurrentAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+				CurrentAimPunchAngle.y = std::clamp(CurrentAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+			}
+
 			cmd->viewangles += (StaticAimPunchAngle - CurrentAimPunchAngle);
 			StaticAimPunchAngle = CurrentAimPunchAngle;
+
+			if (fabs(StaticAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(StaticAimPunchAngle.y) > config.misc.maxAngleDelta) {
+				StaticAimPunchAngle.x = std::clamp(StaticAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+				StaticAimPunchAngle.y = std::clamp(StaticAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+			}
+
 		}
 		else
 		{
@@ -132,7 +144,19 @@ void Aimbot::run(UserCmd* cmd) noexcept
 			auto AfterCurrentAimPunchAngle = localPlayer->aimPunchAngle() * SRCSweaponRecoilScale->getFloat();
 			AfterCurrentAimPunchAngle.x *= config.aimbot[weaponIndex].recoilControlY;
 			AfterCurrentAimPunchAngle.y *= config.aimbot[weaponIndex].recoilControlX;
+
+			if (fabs(AfterCurrentAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(AfterCurrentAimPunchAngle.y) > config.misc.maxAngleDelta) {
+				AfterCurrentAimPunchAngle.x = std::clamp(AfterCurrentAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+				AfterCurrentAimPunchAngle.y = std::clamp(AfterCurrentAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+			}
+
 			StaticAimPunchAngle = AfterCurrentAimPunchAngle;
+
+			if (fabs(StaticAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(StaticAimPunchAngle.y) > config.misc.maxAngleDelta) {
+				StaticAimPunchAngle.x = std::clamp(StaticAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+				StaticAimPunchAngle.y = std::clamp(StaticAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
+			}
+
 		}
 
 		interfaces.engine->setViewAngles(cmd->viewangles);
