@@ -144,19 +144,28 @@ void Aimbot::run(UserCmd* cmd) noexcept
 
     if (!config.aimbot[weaponIndex].ignoreFlash && localPlayer->flashDuration())
         return;
+	
+	if (config.triggerbot[weaponIndex].triggerAim) {
+		config.aimbot[weaponIndex].keyTriggerAim = config.triggerbot[weaponIndex].key;
+	}
+	else
+	{
+		config.aimbot[weaponIndex].keyTriggerAim = config.aimbot[weaponIndex].key;
+	}
 
-    if (config.aimbot[weaponIndex].onKey) {
-        if (!config.aimbot[weaponIndex].keyMode) {
-            if (!GetAsyncKeyState(config.aimbot[weaponIndex].key))
-                return;
-        } else {
-            static bool toggle = true;
-            if (GetAsyncKeyState(config.aimbot[weaponIndex].key) & 1)
-                toggle = !toggle;
-            if (!toggle)
-                return;
-        }
-    }
+	if (config.aimbot[weaponIndex].onKey) {
+		if (!config.aimbot[weaponIndex].keyMode) {
+			if (!GetAsyncKeyState(config.aimbot[weaponIndex].key) && !GetAsyncKeyState(config.aimbot[weaponIndex].keyTriggerAim))
+				return;
+		}
+		else {
+			static bool toggle = true;
+			if (GetAsyncKeyState(config.aimbot[weaponIndex].key) & 1 && GetAsyncKeyState(config.aimbot[weaponIndex].keyTriggerAim) & 1)
+				toggle = !toggle;
+			if (!toggle)
+				return;
+		}
+	}
 
     if (config.aimbot[weaponIndex].enabled && (cmd->buttons & UserCmd::IN_ATTACK || config.aimbot[weaponIndex].autoShot || config.aimbot[weaponIndex].aimlock) && activeWeapon->getInaccuracy() <= config.aimbot[weaponIndex].maxAimInaccuracy) {
 

@@ -113,6 +113,9 @@
     <ClCompile Include="imguiCustom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AntiDetection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI.h">
@@ -338,6 +341,9 @@
       <Filter>SDK</Filter>
     </ClInclude>
     <ClInclude Include="imguiCustom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
