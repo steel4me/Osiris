@@ -113,9 +113,10 @@ void Aimbot::run(UserCmd* cmd) noexcept
     if (!config.aimbot[weaponIndex].enabled)
         weaponIndex = 0;
 
+	static Vector StaticAimPunchAngle;
+
 	if (config.aimbot[weaponIndex].enabled && config.aimbot[weaponIndex].standaloneRCS && localPlayer->isAlive()) {
 
-		static Vector StaticAimPunchAngle;
 
 		if (cmd->buttons & UserCmd::IN_ATTACK && localPlayer->getShotsFired() > config.aimbot[weaponIndex].shotsFired)
 		{
@@ -123,20 +124,10 @@ void Aimbot::run(UserCmd* cmd) noexcept
 			auto CurrentAimPunchAngle = localPlayer->aimPunchAngle() * SRCSweaponRecoilScale->getFloat();
 			CurrentAimPunchAngle.x *= config.aimbot[weaponIndex].recoilControlY;
 			CurrentAimPunchAngle.y *= config.aimbot[weaponIndex].recoilControlX;
-
-			if (fabs(CurrentAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(CurrentAimPunchAngle.y) > config.misc.maxAngleDelta) {
-				CurrentAimPunchAngle.x = std::clamp(CurrentAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-				CurrentAimPunchAngle.y = std::clamp(CurrentAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-			}
-
+			CurrentAimPunchAngle.x = std::clamp(CurrentAimPunchAngle.x, -89.0f, 89.0f);
+			CurrentAimPunchAngle.y = std::clamp(CurrentAimPunchAngle.y, -89.0f, 89.0f);
 			cmd->viewangles += (StaticAimPunchAngle - CurrentAimPunchAngle);
 			StaticAimPunchAngle = CurrentAimPunchAngle;
-
-			if (fabs(StaticAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(StaticAimPunchAngle.y) > config.misc.maxAngleDelta) {
-				StaticAimPunchAngle.x = std::clamp(StaticAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-				StaticAimPunchAngle.y = std::clamp(StaticAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-			}
-
 		}
 		else
 		{
@@ -144,19 +135,9 @@ void Aimbot::run(UserCmd* cmd) noexcept
 			auto AfterCurrentAimPunchAngle = localPlayer->aimPunchAngle() * SRCSweaponRecoilScale->getFloat();
 			AfterCurrentAimPunchAngle.x *= config.aimbot[weaponIndex].recoilControlY;
 			AfterCurrentAimPunchAngle.y *= config.aimbot[weaponIndex].recoilControlX;
-
-			if (fabs(AfterCurrentAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(AfterCurrentAimPunchAngle.y) > config.misc.maxAngleDelta) {
-				AfterCurrentAimPunchAngle.x = std::clamp(AfterCurrentAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-				AfterCurrentAimPunchAngle.y = std::clamp(AfterCurrentAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-			}
-
+			AfterCurrentAimPunchAngle.x = std::clamp(AfterCurrentAimPunchAngle.x, -89.0f, 89.0f);
+			AfterCurrentAimPunchAngle.y = std::clamp(AfterCurrentAimPunchAngle.y, -89.0f, 89.0f);
 			StaticAimPunchAngle = AfterCurrentAimPunchAngle;
-
-			if (fabs(StaticAimPunchAngle.x) > config.misc.maxAngleDelta || fabs(StaticAimPunchAngle.y) > config.misc.maxAngleDelta) {
-				StaticAimPunchAngle.x = std::clamp(StaticAimPunchAngle.x, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-				StaticAimPunchAngle.y = std::clamp(StaticAimPunchAngle.y, -config.misc.maxAngleDelta, config.misc.maxAngleDelta);
-			}
-
 		}
 
 		interfaces.engine->setViewAngles(cmd->viewangles);
@@ -200,10 +181,18 @@ void Aimbot::run(UserCmd* cmd) noexcept
         Vector bestTarget{ };
         auto localPlayerEyePosition = localPlayer->getEyePosition();
 
-        static auto weaponRecoilScale = interfaces.cvar->findVar("weapon_recoil_scale");
-        auto aimPunch = localPlayer->aimPunchAngle() * weaponRecoilScale->getFloat();
-        aimPunch.x *= config.aimbot[weaponIndex].recoilControlY;
-        aimPunch.y *= config.aimbot[weaponIndex].recoilControlX;
+		Vector aimPunch;
+		
+		if (config.aimbot[weaponIndex].enabled && config.aimbot[weaponIndex].standaloneRCS && localPlayer->isAlive()) {
+			aimPunch = StaticAimPunchAngle;
+		}
+		else
+		{
+			static auto weaponRecoilScale = interfaces.cvar->findVar("weapon_recoil_scale");
+			aimPunch = localPlayer->aimPunchAngle() * weaponRecoilScale->getFloat();
+			aimPunch.x *= config.aimbot[weaponIndex].recoilControlY;
+			aimPunch.y *= config.aimbot[weaponIndex].recoilControlX;
+		}
 
         for (int i = 1; i <= interfaces.engine->getMaxClients(); i++) {
             auto entity = interfaces.entityList->getEntity(i);
@@ -237,7 +226,7 @@ void Aimbot::run(UserCmd* cmd) noexcept
             if (lastCommand == cmd->commandNumber - 1 && lastAngles && config.aimbot[weaponIndex].silent)
                 cmd->viewangles = lastAngles;
 
-            auto angle = calculateRelativeAngle(localPlayer->getEyePosition(), bestTarget, cmd->viewangles + aimPunch);
+			auto angle = calculateRelativeAngle(localPlayer->getEyePosition(), bestTarget, cmd->viewangles + aimPunch);
             bool clamped{ false };
 
             if (fabs(angle.x) > config.misc.maxAngleDelta || fabs(angle.y) > config.misc.maxAngleDelta) {
