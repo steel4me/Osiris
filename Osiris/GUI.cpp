@@ -255,6 +255,9 @@ void GUI::renderAimbotWindow(bool contentOnly) noexcept
     config.aimbot[currentWeapon].minDamage = std::clamp(config.aimbot[currentWeapon].minDamage, 0, 250);
     ImGui::Checkbox("Killshot", &config.aimbot[currentWeapon].killshot);
     ImGui::Checkbox("Between shots", &config.aimbot[currentWeapon].betweenShots);
+	ImGui::Checkbox("Standalone RCS", &config.aimbot[currentWeapon].standaloneRCS);
+	ImGui::InputInt("Ignore Shots", &config.aimbot[currentWeapon].shotsFired);
+	config.aimbot[currentWeapon].shotsFired = std::clamp(config.aimbot[currentWeapon].shotsFired, 0, 10);
     ImGui::Columns(1);
     if (!contentOnly)
         ImGui::End();
@@ -384,6 +387,7 @@ void GUI::renderTriggerbotWindow(bool contentOnly) noexcept
     ImGui::SameLine();
     hotkey(config.triggerbot[currentWeapon].key);
     ImGui::Checkbox("Friendly fire", &config.triggerbot[currentWeapon].friendlyFire);
+	ImGui::Checkbox("Trigger Aim", &config.triggerbot[currentWeapon].triggerAim);
     ImGui::Checkbox("Scoped only", &config.triggerbot[currentWeapon].scopedOnly);
     ImGui::Checkbox("Ignore flash", &config.triggerbot[currentWeapon].ignoreFlash);
     ImGui::Checkbox("Ignore smoke", &config.triggerbot[currentWeapon].ignoreSmoke);
