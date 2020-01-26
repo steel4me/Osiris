@@ -113,7 +113,10 @@
     <ClCompile Include="imguiCustom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AntiDetection.cpp">
+    <ClCompile Include="imgui\imgui_stdlib.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+        <ClCompile Include="AntiDetection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -343,7 +346,10 @@
     <ClInclude Include="imguiCustom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AntiDetection.h">
+    <ClInclude Include="imgui\imgui_stdlib.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+     <ClInclude Include="AntiDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
