@@ -164,7 +164,7 @@ public:
 
     constexpr int getWeaponSubType() noexcept
     {
-        return callVirtualMethod<int>(this, 279);
+        return callVirtualMethod<int>(this, 281);
     }
 
     constexpr WeaponData* getWeaponData() noexcept
@@ -176,7 +176,7 @@ public:
     {
         return callVirtualMethod<float>(this, 481);
     }
-    
+
     VarMap* getVarMap() noexcept
     {
         return reinterpret_cast<VarMap*>(this + 0x24);
