@@ -116,7 +116,10 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-        <ClCompile Include="AntiDetection.cpp">
+    <ClCompile Include="Hacks\EnginePrediction.cpp">
+      <Filter>Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiDetection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -349,8 +352,17 @@
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>imgui</Filter>
     </ClInclude>
-     <ClInclude Include="AntiDetection.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="SDK\GameMovement.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\MoveHelper.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Prediction.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\EnginePrediction.h">
+      <Filter>Hacks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
