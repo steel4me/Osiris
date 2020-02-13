@@ -181,7 +181,7 @@ void Aimbot::run(UserCmd* cmd) noexcept
         Vector bestTarget{ };
         auto localPlayerEyePosition = localPlayer->getEyePosition();
 
-		Vector aimPunch;
+		auto aimPunch = localPlayer->getAimPunch();
 		
 		if (config.aimbot[weaponIndex].enabled && config.aimbot[weaponIndex].standaloneRCS && localPlayer->isAlive()) {
 			aimPunch = StaticAimPunchAngle;
