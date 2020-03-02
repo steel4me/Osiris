@@ -129,40 +129,6 @@ void Aimbot::run(UserCmd* cmd) noexcept
         weaponIndex = 0;
 
 
-	/*
-	static Vector StaticAimPunchAngle;
-
-	if (config.aimbot[weaponIndex].enabled && config.aimbot[weaponIndex].standaloneRCS && localPlayer->isAlive()) {
-
-
-		if (cmd->buttons & UserCmd::IN_ATTACK && localPlayer->getShotsFired() > config.aimbot[weaponIndex].shotsFired)
-		{
-			static auto SRCSweaponRecoilScale = interfaces.cvar->findVar("weapon_recoil_scale");
-			auto CurrentAimPunchAngle = localPlayer->aimPunchAngle() * SRCSweaponRecoilScale->getFloat();
-			CurrentAimPunchAngle.x *= config.aimbot[weaponIndex].recoilControlY;
-			CurrentAimPunchAngle.y *= config.aimbot[weaponIndex].recoilControlX;
-			CurrentAimPunchAngle.x = std::clamp(CurrentAimPunchAngle.x, -89.0f, 89.0f);
-			CurrentAimPunchAngle.y = std::clamp(CurrentAimPunchAngle.y, -89.0f, 89.0f);
-			cmd->viewangles += (StaticAimPunchAngle - CurrentAimPunchAngle);
-			StaticAimPunchAngle = CurrentAimPunchAngle;
-		}
-		else
-		{
-			static auto SRCSweaponRecoilScale = interfaces.cvar->findVar("weapon_recoil_scale");
-			auto AfterCurrentAimPunchAngle = localPlayer->aimPunchAngle() * SRCSweaponRecoilScale->getFloat();
-			AfterCurrentAimPunchAngle.x *= config.aimbot[weaponIndex].recoilControlY;
-			AfterCurrentAimPunchAngle.y *= config.aimbot[weaponIndex].recoilControlX;
-			AfterCurrentAimPunchAngle.x = std::clamp(AfterCurrentAimPunchAngle.x, -89.0f, 89.0f);
-			AfterCurrentAimPunchAngle.y = std::clamp(AfterCurrentAimPunchAngle.y, -89.0f, 89.0f);
-			StaticAimPunchAngle = AfterCurrentAimPunchAngle;
-		}
-
-		interfaces.engine->setViewAngles(cmd->viewangles);
-
-	}
-
-	*/
-
     if (!config.aimbot[weaponIndex].betweenShots && activeWeapon->nextPrimaryAttack() > memory.globalVars->serverTime())
         return;
 
@@ -199,20 +165,7 @@ void Aimbot::run(UserCmd* cmd) noexcept
         auto bestFov = config.aimbot[weaponIndex].fov;
         Vector bestTarget{ };
         auto localPlayerEyePosition = localPlayer->getEyePosition();
-
 		
-		
-		/*
-		auto aimPunch = localPlayer->getAimPunch();
-		if (config.aimbot[weaponIndex].enabled && config.aimbot[weaponIndex].standaloneRCS && localPlayer->isAlive()) {
-			aimPunch = StaticAimPunchAngle;
-		}
-		else
-		{
-		aimPunch.x *= config.aimbot[weaponIndex].recoilControlY;
-		aimPunch.y *= config.aimbot[weaponIndex].recoilControlX;
-		}
-		*/
 			auto aimPunch = localPlayer->getAimPunch();
 			if (config.aimbot[weaponIndex].standaloneRCS && !config.aimbot[weaponIndex].silent) {
 				static Vector lastAimPunch{ };
