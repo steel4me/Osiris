@@ -886,6 +886,8 @@ void Config::load(size_t id) noexcept
                 misc.bombTimer.rainbowSpeed = rainbowSpeed.asFloat();
         }
 
+		if (miscJson.isMember("Bomb Damage Indicator")) misc.bombDamage = miscJson["Bomb Damage Indicator"].asBool();
+
         if (miscJson.isMember("Quick reload")) misc.quickReload = miscJson["Quick reload"].asBool();
         if (miscJson.isMember("Prepare revolver")) misc.prepareRevolver = miscJson["Prepare revolver"].asBool();
         if (miscJson.isMember("Prepare revolver key")) misc.prepareRevolverKey = miscJson["Prepare revolver key"].asInt();
@@ -1625,6 +1627,8 @@ void Config::save(size_t id) const noexcept
             bombTimerJson["Rainbow"] = misc.bombTimer.rainbow;
             bombTimerJson["Rainbow speed"] = misc.bombTimer.rainbowSpeed;
         }
+
+		miscJson["Bomb Damage Indicator"] = misc.bombDamage;
 
         miscJson["Quick reload"] = misc.quickReload;
         miscJson["Prepare revolver"] = misc.prepareRevolver;
